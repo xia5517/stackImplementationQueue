@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Stack() {
+            this.arr = [];
+            this.length = 0;
+            this.pop = function() {
+                return this.arr[--this.length];
+            };
+            this.push = function(val) {
+                return this.arr[this.length++] = val;
+            }
+            this.peek = function() {
+                return this.arr[this.length - 1]
+            }
+            this.size = function() {
+                return this.length;
+            }
+            this.display = function() {
+                console.log(this)
+            }
+        }
+
+
+
+
+        function Queue() {
+            this.arr = [];
+            this.enqueue = function(val) {
+                return this.arr.push(val);
+            }
+            this.dequeue = function() {
+                return this.arr.shift();
+            }
+            this.front = function() {
+                return this.arr[0]
+            }
+            this.back = function() {
+                return this.arr[this.arr.length - 1]
+            }
+            this.display = function() {
+                console.log(this.arr)
+            }
+        }
+
+
+        function QueueStack() {
+            this.stack = new Stack();
+            this.queue = new Stack();
+
+            this.enqueue = function(val) {
+                // this.transformStack(this.queue, this.stack)
+                this.stack.push(val);
+            }
+
+            this.dequeue = function() {
+                this.transformStack(this.stack, this.queue)
+                let result = this.queue.pop();
+                this.transformStack(this.queue, this.stack)
+                return result;
+            }
+
+            this.front = function() {
+                this.transformStack(this.stack, this.queue)
+                let result = this.queue.pop();
+                this.transformStack(this.queue, this.stack)
+                return result;
+            }
+
+            this.back = function() {
+                return this.stack.peek();
+            }
+
+            this.transformStack = function(alter, alted) {
+                while (alter.size() > 0) {
+                    alted.push(alter.pop())
+                }
+            }
+
+            this.display = function() {
+                this.transformStack(this.stack, this.queue)
+                this.queue.display()
+                this.transformStack(this.queue, this.stack)
+            }
+        }
+
+
+
+        let queueR = new Queue();
+        let queueV = new QueueStack()
+        let arr = [1, 2, 3, 4, 5, 6]
+        arr.forEach(function(item) {
+            queueR.enqueue(item);
+            queueV.enqueue(item);
+        })
+
+        // queueV.display()
+        console.log(queueR.dequeue())
+        console.log(queueV.dequeue())
+
+        // console.log(queueV.stack)
+        // console.log(queueV.queue)
+
+        queueR.enqueue(7)
+        queueV.enqueue(7)
+
+        console.log(queueR.dequeue())
+        console.log(queueV.dequeue())
+
+        console.log(queueR.dequeue())
+        console.log(queueV.dequeue())
+    </script>
+</body>
+
+</html>
